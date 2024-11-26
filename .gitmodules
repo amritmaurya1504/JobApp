@@ -1,0 +1,3 @@
+[submodule "Monolithic_Arch"]
+	path = Monolithic_Arch
+	url = https://github.com/amritmaurya1504/Monolithic_JobApp.git
