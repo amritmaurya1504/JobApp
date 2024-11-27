@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="reviewms" />
         <module name="companyms" />
+        <module name="service-reg" />
         <module name="jobms" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="companyms" options="-parameters" />
       <module name="jobms" options="-parameters" />
       <module name="reviewms" options="-parameters" />
+      <module name="service-reg" options="-parameters" />
     </option>
   </component>
 </project>

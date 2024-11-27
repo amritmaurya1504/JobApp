@@ -1,5 +1,7 @@
 package com.amritraj.jobms.job;
 
+import com.amritraj.jobms.job.dto.AddJobDTO;
+import com.amritraj.jobms.job.dto.JobDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,21 +31,21 @@ public class JobController {
     // Get a job by ID
     @GetMapping("/{jobId}")
     public ResponseEntity<JobDTO> getJobById(@PathVariable String jobId) {
-        JobDTO job = jobService.findJobById(jobId);
-        return new ResponseEntity<>(job, HttpStatus.OK);
+        JobDTO jobWithCompanyDTO = jobService.findJobById(jobId);
+        return new ResponseEntity<>(jobWithCompanyDTO, HttpStatus.OK);
     }
 
     // Create a new job
     @PostMapping
-    public ResponseEntity<JobDTO> createJob(@RequestBody JobDTO job) {
-        JobDTO createdJob = jobService.createJob(job);
+    public ResponseEntity<AddJobDTO> createJob(@RequestBody AddJobDTO job) {
+        AddJobDTO createdJob = jobService.createJob(job);
         return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
     }
 
     // Update an existing job
     @PutMapping("/{jobId}")
-    public ResponseEntity<JobDTO> updateJob(@RequestBody JobDTO job, @PathVariable String jobId) {
-        JobDTO updatedJob = jobService.updateJob(job, jobId);
+    public ResponseEntity<AddJobDTO> updateJob(@RequestBody AddJobDTO job, @PathVariable String jobId) {
+        AddJobDTO updatedJob = jobService.updateJob(job, jobId);
         return new ResponseEntity<>(updatedJob, HttpStatus.OK);
     }
 

@@ -4,7 +4,7 @@ import com.amritraj.companyms.company.Company;
 import com.amritraj.companyms.company.CompanyDTO;
 import com.amritraj.companyms.company.CompanyRepo;
 import com.amritraj.companyms.company.CompanyService;
-import com.amritraj.companyms.exceptions.ResourceNotFoundException;
+import com.amritraj.companyms.company.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
