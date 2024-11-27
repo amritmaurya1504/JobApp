@@ -1,5 +1,7 @@
 package com.amritraj.jobms.job.impl;
 
+import com.amritraj.jobms.job.clients.CompanyClient;
+import com.amritraj.jobms.job.clients.ReviewClient;
 import com.amritraj.jobms.job.exceptions.ResourceNotFoundException;
 import com.amritraj.jobms.job.Job;
 import com.amritraj.jobms.job.dto.AddJobDTO;
@@ -10,11 +12,7 @@ import com.amritraj.jobms.job.external.Company;
 import com.amritraj.jobms.job.external.Review;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,16 +21,22 @@ import java.util.stream.Collectors;
 @Service
 public class JobServiceImpl implements JobService {
 
-    @Autowired
-    RestTemplate restTemplate;
+//    @Autowired
+//    RestTemplate restTemplate;
 
     private final JobRepo jobRepo;
     private final ModelMapper modelMapper;
+    private final CompanyClient companyClient;
+    private final ReviewClient reviewClient;
 
     @Autowired
-    public JobServiceImpl(JobRepo jobRepo, ModelMapper modelMapper){
+    public JobServiceImpl(JobRepo jobRepo, ModelMapper modelMapper,
+                          CompanyClient companyClient,
+                          ReviewClient reviewClient){
         this.jobRepo = jobRepo;
         this.modelMapper = modelMapper;
+        this.companyClient = companyClient;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -52,6 +56,7 @@ public class JobServiceImpl implements JobService {
     }
 
     private JobDTO convertToDto(Job job){
+        /* USING REST TEMPLATE
         Company company = restTemplate.getForObject(
                 "http://COMPANY-SERVICE:8081/companies/" + job.getCompanyId(),
                 Company.class);
@@ -62,7 +67,11 @@ public class JobServiceImpl implements JobService {
                 new ParameterizedTypeReference<List<Review>>() {
                 }
         );
-        List<Review> reviews = reviewResponse.getBody();
+         */
+
+        // USING FEIGN CLIENT
+        Company company = companyClient.getCompany(job.getCompanyId());
+        List<Review> reviews = reviewClient.getReviews(job.getCompanyId());
         JobDTO jobDTO = this.modelMapper
                 .map(job, JobDTO.class);
         jobDTO.setCompany(company);
