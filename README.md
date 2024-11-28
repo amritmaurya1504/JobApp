@@ -1,10 +1,3 @@
-write warkdown file
-ChatGPT said:
-ChatGPT
-Here's the README.md in proper Markdown format:
-
-markdown
-Copy code
 # JobApp Repository
 
 This repository contains two different architectures of the **JobApp** project: 
