@@ -12,6 +12,7 @@
         <module name="service-reg" />
         <module name="config-server" />
         <module name="jobms" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
   </component>
@@ -19,6 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="companyms" options="-parameters" />
       <module name="config-server" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="jobms" options="-parameters" />
       <module name="reviewms" options="-parameters" />
       <module name="service-reg" options="-parameters" />
