@@ -10,19 +10,19 @@ import com.amritraj.jobms.job.JobService;
 import com.amritraj.jobms.job.dto.JobDTO;
 import com.amritraj.jobms.job.external.Company;
 import com.amritraj.jobms.job.external.Review;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class JobServiceImpl implements JobService {
-
-//    @Autowired
-//    RestTemplate restTemplate;
 
     private final JobRepo jobRepo;
     private final ModelMapper modelMapper;
@@ -40,9 +40,18 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+//    @CircuitBreaker(name = "companyBreaker",
+//            fallbackMethod = "companyBreakerFallback")
+    @RateLimiter(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> findAllJobs() {
         List<Job> allJobs = jobRepo.findAll();
         return allJobs.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    public List<String> companyBreakerFallback(Exception e){
+        List<String> list = new ArrayList<>();
+        list.add("Dummy");
+        return list;
     }
 
     @Override
@@ -113,4 +122,5 @@ public class JobServiceImpl implements JobService {
                 job, Job.class
         )), AddJobDTO.class);
     }
+
 }
