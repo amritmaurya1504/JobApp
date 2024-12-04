@@ -3,7 +3,7 @@ package com.amritraj.reviewms.review.impl;
 import com.amritraj.reviewms.review.exceptions.IllegalArgumentExc;
 import com.amritraj.reviewms.review.exceptions.ResourceNotFoundException;
 import com.amritraj.reviewms.review.Review;
-import com.amritraj.reviewms.review.ReviewDTO;
+import com.amritraj.reviewms.review.dto.ReviewDTO;
 import com.amritraj.reviewms.review.ReviewRepo;
 import com.amritraj.reviewms.review.ReviewService;
 import org.modelmapper.ModelMapper;

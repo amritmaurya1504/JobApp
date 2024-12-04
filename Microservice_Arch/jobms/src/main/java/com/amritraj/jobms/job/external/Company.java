@@ -13,4 +13,5 @@ public class Company {
     private String companyId;
     private String name;
     private String description;
+    private double rating;
 }

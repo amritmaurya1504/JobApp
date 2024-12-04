@@ -1,9 +1,11 @@
 package com.amritraj.companyms.company.impl;
 
 import com.amritraj.companyms.company.Company;
-import com.amritraj.companyms.company.CompanyDTO;
+import com.amritraj.companyms.company.clients.ReviewClient;
+import com.amritraj.companyms.company.dto.CompanyDTO;
 import com.amritraj.companyms.company.CompanyRepo;
 import com.amritraj.companyms.company.CompanyService;
+import com.amritraj.companyms.company.dto.ReviewMessage;
 import com.amritraj.companyms.company.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,15 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepo companyRepo;
     private final ModelMapper modelMapper;
+    private final ReviewClient reviewClient;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepo companyRepo, ModelMapper modelMapper){
+    public CompanyServiceImpl(CompanyRepo companyRepo,
+                              ModelMapper modelMapper,
+                              ReviewClient reviewClient){
         this.companyRepo = companyRepo;
         this.modelMapper = modelMapper;
+        this.reviewClient = reviewClient;
     }
 
 
@@ -71,5 +77,21 @@ public class CompanyServiceImpl implements CompanyService {
         );
 
         companyRepo.delete(company);
+    }
+
+    @Override
+    public void updateCompanyRating(ReviewMessage reviewMessage) {
+        Company company = companyRepo.findById(reviewMessage.getCompanyId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Company with id " + reviewMessage.getCompanyId() +
+                                " not found!"
+                ));
+
+        double averageRating = reviewClient.getAverageRatingForCompany(
+                reviewMessage.getCompanyId()
+        );
+        System.out.println("Average Rating: " + averageRating);
+        company.setRating(averageRating);
+        companyRepo.save(company);
     }
 }

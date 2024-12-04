@@ -1,5 +1,7 @@
 package com.amritraj.reviewms.review;
 
+import com.amritraj.reviewms.review.dto.ReviewDTO;
+
 import java.util.List;
 
 public interface ReviewService {

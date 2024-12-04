@@ -1,5 +1,9 @@
 package com.amritraj.reviewms.review;
 
+import com.amritraj.reviewms.review.dto.ReviewDTO;
+import com.amritraj.reviewms.review.dto.ReviewMessage;
+import com.amritraj.reviewms.review.messaging.ReviewMessageProducer;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +16,12 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewMessageProducer reviewMessageProducer;
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService,
+                            ReviewMessageProducer reviewMessageProducer) {
+        this.reviewMessageProducer = reviewMessageProducer;
         this.reviewService = reviewService;
     }
 
@@ -29,7 +36,9 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<ReviewDTO> createReview(@RequestParam String companyId ,
                                                   @RequestBody ReviewDTO reviewDTO) {
-        ReviewDTO createdReview = reviewService.createReview(companyId, reviewDTO);
+        ReviewDTO createdReview = reviewService.createReview(companyId,
+                reviewDTO);
+        reviewMessageProducer.sendMessage(createdReview);
         return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
 
@@ -54,5 +63,14 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
         return new ResponseEntity<>("Review deleted successfully!",
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/average-rating")
+    public Double getAverageReview(@RequestParam String companyId){
+        List<ReviewDTO> reviewDTOList = reviewService.getAllReviews(companyId);
+        return reviewDTOList.stream()
+                .mapToDouble(ReviewDTO::getRating)
+                .average()
+                .orElse(0.0);
     }
 }

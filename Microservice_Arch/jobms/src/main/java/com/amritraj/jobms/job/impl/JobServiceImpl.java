@@ -42,7 +42,7 @@ public class JobServiceImpl implements JobService {
     @Override
 //    @CircuitBreaker(name = "companyBreaker",
 //            fallbackMethod = "companyBreakerFallback")
-    @RateLimiter(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
+//    @RateLimiter(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> findAllJobs() {
         List<Job> allJobs = jobRepo.findAll();
         return allJobs.stream().map(this::convertToDto).collect(Collectors.toList());

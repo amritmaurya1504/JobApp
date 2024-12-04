@@ -1,4 +1,4 @@
-package com.amritraj.companyms.company;
+package com.amritraj.companyms.company.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,4 +13,5 @@ public class CompanyDTO {
     private String companyId;
     private String name;
     private String description;
+    private double rating;
 }

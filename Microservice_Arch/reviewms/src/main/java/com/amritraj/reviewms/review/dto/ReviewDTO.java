@@ -1,4 +1,4 @@
-package com.amritraj.reviewms.review;
+package com.amritraj.reviewms.review.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
